@@ -9,7 +9,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-    .setTitle('Growth Channel')
+    .setTitle('Compass Hackathon 2023')
     .addBearerAuth()
     .build();
 
