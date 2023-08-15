@@ -3,7 +3,7 @@ export const generatePersonaTemplate = (listing: any) => `
   - address: ${listing.city} ${listing.address}.
   - price: ${listing.displayPrice}.
   - key details: ${listing.keyDetails
-    .filter((detail: any) => detail.value !== '-')
+    .filter((detail: any) => detail.key === 'MLS ID' || detail.value !== '-')
     .map((detail: any) => `${detail.key} is ${detail.value}`)
     .join(',')}.
   - public records: ${listing.publicRecords
@@ -32,8 +32,9 @@ export const generatePersonaTemplate = (listing: any) => `
     "dislikes": string[],
   }
   profile rules:
+  - use different name for each profile.
   - sex available values: male, female.
-  - age available values: adult, young-adult, child, infant, elderly.
   - name and sex should match.
+  - age available values: adult, young-adult, child, infant, elderly.
   - generate jobTitle & annualSalary.
 `;
