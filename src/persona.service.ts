@@ -5,9 +5,13 @@ import { Repository } from 'typeorm';
 import { OpenaiService } from './openai.service';
 import { CreatePersonaDto, GetPersonasDto } from './persona.dto';
 import { generatePersonaTemplate } from './persona.template';
+import { AvatarService } from './avatar.service';
 
 @Injectable()
 export class PersonaService {
+  @Inject()
+  private readonly avatarService: AvatarService;
+
   @Inject()
   private readonly openaiService: OpenaiService;
 
@@ -21,12 +25,16 @@ export class PersonaService {
   }
 
   async createPersona(data: CreatePersonaDto) {
-    const persona = await this.openaiService.chatgpt(
-      generatePersonaTemplate(data.listing),
+    const persona = JSON.parse(
+      await this.openaiService.chatgpt(generatePersonaTemplate(data.listing)),
+    );
+    persona.avatar = await this.avatarService.getRandomAvatar(
+      persona.sex,
+      persona.age,
     );
     return await this.personaRepository.save({
       listing_id: data.listing_id,
-      persona: JSON.parse(persona),
+      persona,
     });
   }
 }
